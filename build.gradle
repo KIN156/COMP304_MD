@@ -3,3 +3,9 @@ plugins {
     id 'com.android.application' version '7.3.0' apply false
     id 'com.android.library' version '7.3.0' apply false
 }
+
+ext {
+    roomVersion = '2.4.3'
+    materialVersion = '1.8.0-alpha02'
+    coreTestingVersion = '2.1.0'
+}
