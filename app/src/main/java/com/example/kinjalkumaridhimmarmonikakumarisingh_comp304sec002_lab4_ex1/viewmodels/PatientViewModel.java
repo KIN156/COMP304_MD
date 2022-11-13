@@ -11,11 +11,11 @@ import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.d
 
 import java.util.List;
 
-public class PatienViewModel extends AndroidViewModel {
+public class PatientViewModel extends AndroidViewModel {
     private PatientRepository patientRepository;
     private LiveData<List<Patient>> allPatients;
 
-    public PatienViewModel(@NonNull Application application) {
+    public PatientViewModel(@NonNull Application application) {
         super(application);
         patientRepository = new PatientRepository(application);
         allPatients = patientRepository.getAllPatients();

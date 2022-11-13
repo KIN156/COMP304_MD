@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">KinjalkumariDhimmarMonikakumariSingh_COMP304Sec002_Lab4_Ex1</string>
+    <string name="patient_information">Patient Information</string>
+    <string name="enter_first_name">Enter First Name</string>
+    <string name="enter_last_name">Enter Last Name</string>
+    <string name="enter_dept_name">Enter Department Name</string>
+    <string name="enter_nurse_id">Enter Nurse ID</string>
+    <string name="enter_room">Enter Room</string>
+    <string name="btn_enter_patient">Enter Patient</string>
 </resources>
