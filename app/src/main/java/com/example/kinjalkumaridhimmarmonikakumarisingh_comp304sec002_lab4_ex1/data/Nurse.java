@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "nurse_table")
 public class Nurse {
 
+    @PrimaryKey
     @NonNull
     private int nurseId;
 
