@@ -26,6 +26,6 @@ public interface PatientDao {
     @Query("SELECT * FROM patient_table WHERE patientID = :patientID")
     LiveData<Patient> getByPatientID(int patientID);
 
-    @Query("SELECT * FROM patient_table")
-    LiveData<List<Patient>> getAllPatients();
+    @Query("select * from patient_table")
+    List<Patient> getAllPatients();
 }

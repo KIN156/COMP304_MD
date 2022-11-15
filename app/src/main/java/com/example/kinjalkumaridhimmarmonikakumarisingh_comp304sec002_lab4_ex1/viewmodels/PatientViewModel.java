@@ -13,12 +13,11 @@ import java.util.List;
 
 public class PatientViewModel extends AndroidViewModel {
     private PatientRepository patientRepository;
-    private LiveData<List<Patient>> allPatients;
+    private List<Patient> allPatients;
 
     public PatientViewModel(@NonNull Application application) {
         super(application);
         patientRepository = new PatientRepository(application);
-        allPatients = patientRepository.getAllPatients();
     }
 
     public LiveData<Patient> findByPatientID(int patientID) {
@@ -29,7 +28,7 @@ public class PatientViewModel extends AndroidViewModel {
         patientRepository.insert(patient);
     }
 
-    public LiveData<List<Patient>> getAllPatients() {
-        return allPatients;
+    public List<Patient> getAllPatients() {
+        return patientRepository.getAllPatients();
     }
 }

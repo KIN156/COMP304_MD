@@ -11,17 +11,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.R;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.Patient;
+import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.interfaces.OnItemClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PatientRecyclerViewAdapter extends RecyclerView.Adapter<PatientRecyclerViewAdapter.ViewHolder> {
 
-    private final ArrayList<Patient> patientArrayList;
+    private final List<Patient> patientArrayList;
     private final Context context;
-
-    public PatientRecyclerViewAdapter(Context context, ArrayList<Patient> patientArrayList) {
+    private static OnItemClickListener itemClickListener = null;
+    public PatientRecyclerViewAdapter(Context context, List<Patient> patientArrayList,
+                                      OnItemClickListener itemClickListener) {
         this.context = context;
         this.patientArrayList = patientArrayList;
+        this.itemClickListener = itemClickListener;
     }
 
     @NonNull
@@ -34,7 +38,7 @@ public class PatientRecyclerViewAdapter extends RecyclerView.Adapter<PatientRecy
     @Override
     public void onBindViewHolder(@NonNull PatientRecyclerViewAdapter.ViewHolder holder, int position) {
         Patient patient = patientArrayList.get(position);
-        holder.patientIDText.setText(patient.getPatientID());
+        holder.patientIDText.setText(String.valueOf(patient.getPatientID()));
         holder.patientFirstNameText.setText(patient.getFirstName());
         holder.patientLastNameText.setText(patient.getLastName());
     }
@@ -44,7 +48,7 @@ public class PatientRecyclerViewAdapter extends RecyclerView.Adapter<PatientRecy
         return patientArrayList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView patientIDText;
         TextView patientFirstNameText;
         TextView patientLastNameText;
@@ -53,6 +57,13 @@ public class PatientRecyclerViewAdapter extends RecyclerView.Adapter<PatientRecy
             patientIDText = itemView.findViewById(R.id.card_patient_id);
             patientFirstNameText = itemView.findViewById(R.id.card_patient_first_name);
             patientLastNameText = itemView.findViewById(R.id.card_patient_last_name);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if(itemClickListener != null)
+                itemClickListener.onItemClick(view, getAdapterPosition());
         }
     }
 }

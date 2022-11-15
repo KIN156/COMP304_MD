@@ -3,6 +3,8 @@ package com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -11,6 +13,8 @@ import android.widget.Toast;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.Patient;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.PatientViewModel;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.List;
 
 public class PatientActivity extends AppCompatActivity {
 
@@ -46,12 +50,11 @@ public class PatientActivity extends AppCompatActivity {
             String departmentValue = department.getText().toString();
             int nurseIDValue = Integer.parseInt(nurseID.getText().toString());
             String roomValue = room.getText().toString();
-
             patientViewModel.insert(new
                     Patient(firstNameValue, lastNameValue,
                     departmentValue, nurseIDValue, roomValue));
-
-//            finish();
+            setResult(Activity.RESULT_OK);
+            finish();
         }
         else {
             Toast.makeText(PatientActivity.this, "Please ensure there are no null values", Toast.LENGTH_SHORT).show();

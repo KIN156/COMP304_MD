@@ -4,20 +4,24 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientRepository {
     public PatientDao patientDao;
-    private LiveData<List<Patient>> allPatients;
+    private List<Patient> allPatients;
 
     public PatientRepository(Application application) {
         PatientDatabase patientDatabase = PatientDatabase.getDatabase(application);
         patientDao = patientDatabase.patientDao();
-        allPatients = patientDao.getAllPatients();
     }
 
-    public LiveData<List<Patient>> getAllPatients() {
-        return allPatients;
+    public List<Patient> getAllPatients()
+    {
+        List<Patient> patients = new ArrayList<>();
+        if(patientDao.getAllPatients() != null)
+            patients = patientDao.getAllPatients();
+        return patients;
     }
 
     public void insert(Patient patient) {
