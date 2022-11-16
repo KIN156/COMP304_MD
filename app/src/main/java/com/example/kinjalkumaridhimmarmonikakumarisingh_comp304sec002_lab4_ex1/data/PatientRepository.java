@@ -30,7 +30,13 @@ public class PatientRepository {
         });
     }
 
-    public LiveData<Patient> findbyPatientID(int patientID) {
+    public void update(Patient patient) {
+        PatientDatabase.databaseWriteExecutor.execute(() -> {
+            patientDao.update(patient);
+        });
+    }
+
+    public Patient findbyPatientID(int patientID) {
         return patientDao.getByPatientID(patientID);
     }
 }

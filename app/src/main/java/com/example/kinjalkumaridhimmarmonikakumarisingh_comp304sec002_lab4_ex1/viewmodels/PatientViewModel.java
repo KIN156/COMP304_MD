@@ -20,13 +20,15 @@ public class PatientViewModel extends AndroidViewModel {
         patientRepository = new PatientRepository(application);
     }
 
-    public LiveData<Patient> findByPatientID(int patientID) {
+    public Patient findByPatientID(int patientID) {
         return patientRepository.findbyPatientID(patientID);
     }
 
     public void insert(Patient patient) {
         patientRepository.insert(patient);
     }
+
+    public void update(Patient patient) { patientRepository.update(patient); }
 
     public List<Patient> getAllPatients() {
         return patientRepository.getAllPatients();

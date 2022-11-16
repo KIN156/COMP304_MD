@@ -7,6 +7,7 @@
     <string name="enter_nurse_id">Enter Nurse ID</string>
     <string name="enter_room">Enter Room</string>
     <string name="btn_enter_patient">Enter Patient</string>
+    <string name="btn_edit_patient">Edit Patient</string>
     <string name="enter_password">Enter password</string>
     <string name="login">Log in</string>
     <string name="patients_list">Patients</string>

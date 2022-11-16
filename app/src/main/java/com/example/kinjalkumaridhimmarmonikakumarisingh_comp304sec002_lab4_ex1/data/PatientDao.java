@@ -24,7 +24,7 @@ public interface PatientDao {
     void deleteAll();
 
     @Query("SELECT * FROM patient_table WHERE patientID = :patientID")
-    LiveData<Patient> getByPatientID(int patientID);
+    Patient getByPatientID(int patientID);
 
     @Query("select * from patient_table")
     List<Patient> getAllPatients();

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.constants.Constants;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.Patient;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.PatientViewModel;
 import com.google.android.material.textfield.TextInputEditText;
@@ -53,7 +54,7 @@ public class PatientActivity extends AppCompatActivity {
             patientViewModel.insert(new
                     Patient(firstNameValue, lastNameValue,
                     departmentValue, nurseIDValue, roomValue));
-            setResult(Activity.RESULT_OK);
+            setResult(Constants.ADD_SUCCESSFUL);
             finish();
         }
         else {

@@ -2,6 +2,8 @@ package com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -17,8 +19,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationBarView
     private FrameLayout frameLayout;
     private HomePageFragmentAdapter homePageFragmentAdapter;
 
-    private ViewPatientInfo viewPatientInfoFragment = new ViewPatientInfo();
-    private ViewTestInfo viewTestInfoFragment = new ViewTestInfo();
+    private ViewPatientInfo viewPatientInfoFragment;
+    private ViewTestInfo viewTestInfoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +30,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationBarView
         bottomNavigationView = findViewById(R.id.bottom_nav_view);
         frameLayout = findViewById(R.id.home_frame_layout);
 
+        //InitializeFragment
+        viewPatientInfoFragment = new ViewPatientInfo();
+        viewTestInfoFragment = new ViewTestInfo();
+
         bottomNavigationView.setOnItemSelectedListener(this);
         //By Default we have selected patient list
         bottomNavigationView.setSelectedItemId(R.id.patient_list_menu);
+
+
 
 //        FragmentManager fragmentManager = getSupportFragmentManager();
 //        homePageFragmentAdapter = new HomePageFragmentAdapter(fragmentManager, getLifecycle());
@@ -49,14 +57,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationBarView
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        FragmentManager fm = getSupportFragmentManager();
         switch (item.getItemId()) {
             case R.id.patient_list_menu:
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.home_frame_layout, viewPatientInfoFragment).commit();
+                fm.beginTransaction()
+                        .replace(R.id.home_frame_layout, viewPatientInfoFragment)
+                        .commit();
                 return true;
             case R.id.test_list_menu:
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.home_frame_layout, viewTestInfoFragment).commit();
+                fm.beginTransaction()
+                        .replace(R.id.home_frame_layout, viewTestInfoFragment)
+                        .commit();
+
                 return true;
         }
         return false;

@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.adapters.HomePageFragmentAdapter;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.adapters.PatientRecyclerViewAdapter;
+import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.constants.Constants;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.Patient;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.interfaces.OnItemClickListener;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.PatientViewModel;
@@ -37,13 +38,19 @@ import java.util.List;
 
 public class ViewPatientInfo extends Fragment implements OnItemClickListener {
 
-    HomePageFragmentAdapter homePageFragmentAdapter;
+    PatientRecyclerViewAdapter patientRecyclerViewAdapter;
     ViewPager2 viewPager2;
     RecyclerView patientsRecyclerView;
     FloatingActionButton addPatientFab;
     private PatientViewModel patientViewModel;
     View root;
     List<Patient> allPatients = new ArrayList<>();
+    //Activity Result Launchers
+    ActivityResultLauncher<Intent> mStartAddPatientForResult;
+    ActivityResultLauncher<Intent> mStartEditPatientForResult;
+
+    int currentResultCode = -1;
+    int lastChosenPatientPosition = -1;
 
     private class GetPatientsDataAsyncClass extends AsyncTask<PatientViewModel, Void, List<Patient>> {
 
@@ -68,12 +75,51 @@ public class ViewPatientInfo extends Fragment implements OnItemClickListener {
                         "Patient database is empty", Toast.LENGTH_SHORT).show();
             }else{
                 //We only proceed to create recycler adapter if patients data is not empty
-                allPatients = patients;
-                PatientRecyclerViewAdapter patientRecyclerViewAdapter =
-                        new PatientRecyclerViewAdapter(root.getContext(), patients,
-                                ViewPatientInfo.this);
-                patientsRecyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-                patientsRecyclerView.setAdapter(patientRecyclerViewAdapter);
+
+                //Source data for recycler view is empty we copy all data from patients
+                // to source data aka allPatients
+                if(allPatients.isEmpty()){
+                    allPatients = patients;
+                }else if(currentResultCode == Constants.ADD_SUCCESSFUL){
+                    //We only add the newly added patient who is at the end of the list
+                    allPatients.add(patients.get(patients.size()-1));
+                }else if(currentResultCode == Constants.EDIT_SUCCESSFUL) {
+                    //Update the changed patient
+                    allPatients.set(lastChosenPatientPosition,
+                            patients.get(lastChosenPatientPosition));
+                }
+
+                if(patientRecyclerViewAdapter == null){
+                    patientRecyclerViewAdapter =
+                            new PatientRecyclerViewAdapter(root.getContext(), allPatients,
+                                    ViewPatientInfo.this);
+                    patientsRecyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+                    patientsRecyclerView.setAdapter(patientRecyclerViewAdapter);
+                }else{
+                    //Dont need to create adapter, we use the existing adapter and notify
+                    //changes in data
+                    if(currentResultCode == Constants.ADD_SUCCESSFUL) {
+                        patientRecyclerViewAdapter.notifyItemInserted(allPatients.size()-1);
+                        //reset code
+                        currentResultCode = -1;
+                        Toast.makeText(root.getContext(),
+                                        "Patient Added Successfully", Toast.LENGTH_SHORT)
+                                .show();
+                    }else if(currentResultCode == Constants.EDIT_SUCCESSFUL) {
+                        patientRecyclerViewAdapter.notifyItemChanged(lastChosenPatientPosition);
+                        //reset position
+                        lastChosenPatientPosition = -1;
+                        //reset code
+                        currentResultCode = -1;
+                        Toast.makeText(root.getContext(), "Patient Edited Successfully",
+                                Toast.LENGTH_SHORT).show();
+                    }else{
+                        //Executes when switch between tabs happen as layout and adapter for
+                        // recyclerview becomes null when switching tabs
+                        patientsRecyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+                        patientsRecyclerView.setAdapter(patientRecyclerViewAdapter);
+                    }
+                }
             }
         }
     }
@@ -86,7 +132,9 @@ public class ViewPatientInfo extends Fragment implements OnItemClickListener {
     @Override
     public void onItemClick(View view, int position) {
         Patient patient = allPatients.get(position);
+        lastChosenPatientPosition = position;
         Intent intent = new Intent(root.getContext(), UpdateInfoActivity.class);
+        intent.putExtra("patient_id", patient.getPatientID());
         intent.putExtra("patient_first_name", patient.getFirstName());
         intent.putExtra("patient_last_name", patient.getLastName());
         intent.putExtra("patient_department", patient.getDepartment());
@@ -116,43 +164,50 @@ public class ViewPatientInfo extends Fragment implements OnItemClickListener {
         // Required empty public constructor
     }
 
-    //Activity Result Launchers
-    ActivityResultLauncher<Intent> mStartAddPatientForResult =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if(result.getResultCode() == Activity.RESULT_OK) {
-                //Fetch new Data if user has set new data
-                new GetPatientsDataAsyncClass().execute(patientViewModel);
-            }
-        }
-    });
-
-    ActivityResultLauncher<Intent> mStartEditPatientForResult =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if(result.getResultCode() == Activity.RESULT_OK) {
-                //Fetch new Data if user has edited data
-                new GetPatientsDataAsyncClass().execute(patientViewModel);
-            }
-        }
-    });
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //Initialize codes
+        currentResultCode = -1;
+
+        //Initialize chosen position
+        lastChosenPatientPosition = -1;
+
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_view_patient_info, container, false);
-
-        //Initialize Patient View Model
-        patientViewModel = new ViewModelProvider(this).get(PatientViewModel.class);
 
         //Initialize UI elements
         addPatientFab = root.findViewById(R.id.fab_add_patient);
         patientsRecyclerView = root.findViewById(R.id.patient_recycler_view);
+
+        //Initialize Patient View Model
+        patientViewModel = new ViewModelProvider(this).get(PatientViewModel.class);
+
+        //Register Activity Result
+        mStartEditPatientForResult = registerForActivityResult(new
+                        ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode() == Constants.EDIT_SUCCESSFUL) {
+                            //Fetch new Data if user has edited data
+                            currentResultCode = Constants.EDIT_SUCCESSFUL;
+                            new GetPatientsDataAsyncClass().execute(patientViewModel);
+                        }
+                    }
+                });
+        mStartAddPatientForResult =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                        new ActivityResultCallback<ActivityResult>() {
+                            @Override
+                            public void onActivityResult(ActivityResult result) {
+                                if(result.getResultCode() == Constants.ADD_SUCCESSFUL) {
+                                    //Fetch new Data if user has set new data
+                                    currentResultCode = Constants.ADD_SUCCESSFUL;
+                                    new GetPatientsDataAsyncClass().execute(patientViewModel);
+                                }
+                            }
+                        });
 
         addPatientFab.setOnClickListener(new View.OnClickListener() {
             @Override
