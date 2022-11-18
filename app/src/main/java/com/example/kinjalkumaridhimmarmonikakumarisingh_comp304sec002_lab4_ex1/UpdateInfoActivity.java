@@ -1,10 +1,10 @@
 package com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,14 +14,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.adapters.TestRecyclerViewAdapter;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.constants.Constants;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.Patient;
+import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.Test;
+import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.interfaces.OnItemClickListener;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.PatientViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class UpdateInfoActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class UpdateInfoActivity extends AppCompatActivity implements OnItemClickListener {
 
     Button editButton;
+    Button addTestButton;
     TextInputEditText editTextFirstName;
     TextInputEditText editTextLastName;
     TextInputEditText editTextDepartment;
@@ -53,17 +60,26 @@ public class UpdateInfoActivity extends AppCompatActivity {
     //Database related
     PatientViewModel patientViewModel;
 
+    //Recycler View related
+    TestRecyclerViewAdapter testRecyclerViewAdapter;
+    RecyclerView testRecyclerView;
+
+    //Data
+    List<Test> allTests;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_info);
 
         editButton = findViewById(R.id.edit_patient_btn);
+        addTestButton = findViewById(R.id.add_test_btn);
         editTextFirstName = findViewById(R.id.edit_firstName);
         editTextLastName = findViewById(R.id.edit_lastName);
         editTextDepartment = findViewById(R.id.edit_department);
         editTextRoom = findViewById(R.id.edit_room);
         editTextNurseId = findViewById(R.id.edit_nurseID);
+        testRecyclerView = findViewById(R.id.test_recycler_view);
 
         //Get Values for all the text fields
         getValuesForTextFields();
@@ -75,12 +91,43 @@ public class UpdateInfoActivity extends AppCompatActivity {
         editTextRoom.setText(patientRoom);
         editTextNurseId.setText(String.valueOf(patientNurseId));
 
+        //Initially users wont be able to edit text field
+        toggleEditTextFields(false);
+
         //Initialize Patient View Model
         patientViewModel = new ViewModelProvider(this).get(PatientViewModel.class);
+
+        //Initialize test recycler view
+        allTests = getAllTests();
+        testRecyclerViewAdapter =
+                new TestRecyclerViewAdapter(UpdateInfoActivity.this, allTests,
+                        UpdateInfoActivity.this);
+        testRecyclerView
+                .setLayoutManager(new LinearLayoutManager(UpdateInfoActivity.this));
+        testRecyclerView.setAdapter(testRecyclerViewAdapter);
+
+
+        addTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UpdateInfoActivity.this, TestActivity.class);
+                startActivity(intent);
+            }
+        });
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //User wishes to edit..
+                //Enable all text fields
+                if(editButton.getText().toString().equals(getString(R.string.btn_edit_patient))) {
+                    toggleEditTextFields(true);
+                    //Change button name to save
+                    editButton.setText(getString(R.string.btn_save_patient));
+                    return;
+                }
+
                 //Update database record
                 String newFirstName = editTextFirstName.getText().toString();
                 String newLastName = editTextLastName.getText().toString();
@@ -164,6 +211,14 @@ public class UpdateInfoActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        //Executes when test item is clicked
+        Test testToSend = allTests.get(position);
+        Intent intent = new Intent(UpdateInfoActivity.this, TestActivity.class);
+        startActivity(intent);
+    }
+
     private class EditPatientOnDatabaseAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
         @Override
@@ -190,9 +245,24 @@ public class UpdateInfoActivity extends AppCompatActivity {
             if(result) {
                 setResult(Constants.EDIT_SUCCESSFUL);
             }
-            finish();
+            editButton.setText(getString(R.string.btn_edit_patient));
+            toggleEditTextFields(false);
+//            finish();
         }
     }
+
+    private List<Test> getAllTests() {
+        List<Test> tests = new ArrayList<>();
+        //Sample Data
+//        tests.add(new Test(123, 456, 90, 126, 65.5f));
+//        tests.add(new Test(124, 457, 91, 123, 62.5f));
+//        tests.add(new Test(133, 458, 92, 125, 61.5f));
+//        tests.add(new Test(153, 459, 94, 128, 67.4f));
+//        tests.add(new Test(113, 460, 95, 129, 63.5f));
+//        tests.add(new Test(193, 461, 97, 123, 62.5f));
+        return tests;
+    }
+
 
     private Patient getChangedPatientData(
             String newFirstName,
@@ -226,6 +296,14 @@ public class UpdateInfoActivity extends AppCompatActivity {
             return null;
         }
         return null;
+    }
+
+    private void toggleEditTextFields(Boolean enabled) {
+        editTextFirstName.setEnabled(enabled);
+        editTextLastName.setEnabled(enabled);
+        editTextDepartment.setEnabled(enabled);
+        editTextRoom.setEnabled(enabled);
+        editTextNurseId.setEnabled(enabled);
     }
 
     private void getValuesForTextFields() {

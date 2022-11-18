@@ -8,28 +8,27 @@
     android:orientation="vertical"
     tools:context=".HomeActivity">
 
-    <FrameLayout
-        android:id="@+id/home_frame_layout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/patient_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@id/bottom_nav_view">
-    </FrameLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-       android:id="@+id/bottom_nav_view"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_patient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        app:itemTextColor="@color/bottom_navigation_selector"
-        app:itemIconTint="@color/bottom_navigation_selector"
-        app:menu="@menu/bottom_nav_menu">
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="25dp"
+        android:src="@drawable/ic_action_add"
+        app:backgroundTint="@color/b_yellow">
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 
 </RelativeLayout>

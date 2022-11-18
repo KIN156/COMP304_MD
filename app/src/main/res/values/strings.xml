@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">KinjalkumariDhimmarMonikakumariSingh_COMP304Sec002_Lab4_Ex1</string>
     <string name="patient_information">Patient Information</string>
+    <string name="add_test_info">Add Test\nInformation</string>
+    <string name="view_patient_information">Patient\nInformation</string>
+    <string name="view_patient_test">Patient\nTests</string>
     <string name="enter_first_name">Enter First Name</string>
     <string name="enter_last_name">Enter Last Name</string>
     <string name="enter_dept_name">Enter Department Name</string>
@@ -8,8 +11,11 @@
     <string name="enter_room">Enter Room</string>
     <string name="btn_enter_patient">Enter Patient</string>
     <string name="btn_edit_patient">Edit Patient</string>
+    <string name="btn_save_patient">Save Patient</string>
     <string name="enter_password">Enter password</string>
     <string name="login">Log in</string>
+    <string name="save_test">Save Test</string>
+    <string name="add_test">Add Test</string>
     <string name="patients_list">Patients</string>
     <string name="tests_list">Tests</string>
     <string name="patient_id">Patient ID:</string>
@@ -18,4 +24,10 @@
     <string name="department">Department:</string>
     <string name="nurse_id">Nurse ID:</string>
     <string name="room">Room:</string>
+    <string name="test_id">Test ID:</string>
+    <string name="bpl">BPL:</string>
+    <string name="bph">BPH:</string>
+    <string name="temperature">Temperature:</string>
+    <string name="covid_test">COVID-19 Test:</string>
+    <string name="hiv_test">HIV/AIDS Test:</string>
 </resources>
