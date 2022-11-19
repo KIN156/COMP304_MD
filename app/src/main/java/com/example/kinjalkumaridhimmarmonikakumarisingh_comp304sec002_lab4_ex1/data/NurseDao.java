@@ -7,6 +7,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.List;
+
 @Dao
 public interface NurseDao {
     @Insert
@@ -22,5 +24,11 @@ public interface NurseDao {
     void deleteAll();
 
     @Query("SELECT * FROM nurse_table WHERE nurseId = :nurseId")
-    LiveData<Nurse> getByNurseID(int nurseId);
+    Nurse getByNurseID(int nurseId);
+
+    @Query("SELECT nurseId from nurse_table")
+    List<Integer> getAllNurseIDs();
+
+    @Query("SELECT password FROM nurse_table WHERE nurseId = :nurseID")
+    String getNursePasswordForNurseID(int nurseID);
 }

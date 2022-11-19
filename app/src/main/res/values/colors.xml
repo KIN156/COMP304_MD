@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="b_yellow">#FFCB37</color>
     <color name="transparent">#00000000</color>
+    <color name="color_indigo">#215882</color>
 </resources>

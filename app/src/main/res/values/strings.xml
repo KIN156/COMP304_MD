@@ -14,9 +14,13 @@
     <string name="btn_save_patient">Save Patient</string>
     <string name="enter_password">Enter password</string>
     <string name="login">Log in</string>
+    <string name="sign_up">Sign Up</string>
     <string name="save_test">Save Test</string>
     <string name="add_test">Add Test</string>
     <string name="patients_list">Patients</string>
+    <string name="password">Password:</string>
+    <string name="confirm_password">Confirm Password:</string>
+    <string name="user_id">User ID:</string>
     <string name="tests_list">Tests</string>
     <string name="patient_id">Patient ID:</string>
     <string name="first_name">First Name:</string>
@@ -30,4 +34,10 @@
     <string name="temperature">Temperature:</string>
     <string name="covid_test">COVID-19 Test:</string>
     <string name="hiv_test">HIV/AIDS Test:</string>
+    <string name="login_signup">Don\'t have an account? Sign up here</string>
+    <string name="logout_confirmation">Are you sure you want to log out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="logout">Logout</string>
+    <string name="profile">Profile</string>
 </resources>

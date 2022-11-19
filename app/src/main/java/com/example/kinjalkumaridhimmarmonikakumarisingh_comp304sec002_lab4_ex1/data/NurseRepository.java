@@ -8,7 +8,6 @@ import java.util.List;
 
 public class NurseRepository {
     public NurseDao nurseDao;
-    private LiveData<List<Nurse>> allNurse;
 
     public NurseRepository(Application application) {
         NurseDatabase nurseDatabase = NurseDatabase.getDatabase(application);
@@ -21,7 +20,15 @@ public class NurseRepository {
         });
     }
 
-    public LiveData<Nurse> findbyNurseID(int nurseId) {
+    public List<Integer> getAllNurseIDs() {
+        return nurseDao.getAllNurseIDs();
+    }
+
+    public String getPasswordForNurseID(int nurseID) {
+        return nurseDao.getNursePasswordForNurseID(nurseID);
+    }
+
+    public Nurse findByNurseID(int nurseId) {
         return nurseDao.getByNurseID(nurseId);
     }
 }

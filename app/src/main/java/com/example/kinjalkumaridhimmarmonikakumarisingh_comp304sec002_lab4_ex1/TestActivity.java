@@ -3,12 +3,14 @@ package com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.constants.Constants;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.Test;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.PatientViewModel;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.TestViewModel;
@@ -25,6 +27,8 @@ public class TestActivity extends AppCompatActivity {
     Button saveTestButton;
 
     //Test Attributes
+    int patientID;
+    int nurseID;
     String bpl;
     String bph;
     String temp;
@@ -50,6 +54,9 @@ public class TestActivity extends AppCompatActivity {
         //Initialize view model for test
         testViewModel = new ViewModelProvider(this).get(TestViewModel.class);
 
+        //Get values from intent
+        getValuesFromIntent();
+
         //Listeners
         saveTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,23 +75,29 @@ public class TestActivity extends AppCompatActivity {
                     hiv = editTextHiv.getText().toString();
                     covid = editTextCovid.getText().toString();
 
-                    Test test = new Test(
-                            1,
-                            2222,
-                            bpl,
-                            bph,
-                            temp,
-                            hiv,
-                            covid
-                    );
-
-                    new AddTestTask().execute(test);
-
+                    if(patientID != -1 && nurseID != -1) {
+                        Test test = new Test(patientID, nurseID, bpl, bph, temp, hiv, covid);
+                        new AddTestTask().execute(test);
+                    }else{
+                        Toast.makeText(TestActivity.this,
+                                "Error retrieving patient ID and nurse ID",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(TestActivity.this, "Test fields cant be left empty", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private void getValuesFromIntent() {
+        Intent intent = getIntent();
+        if(intent.hasExtra("patient_id")) {
+            patientID = intent.getIntExtra("patient_id", -1);
+        }
+        if(intent.hasExtra("nurse_id")) {
+            nurseID = intent.getIntExtra("nurse_id", -1);
+        }
     }
 
     private class AddTestTask extends AsyncTask<Test, Void, Void> {
@@ -101,6 +114,8 @@ public class TestActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
+            TestActivity.this.setResult(Constants.ADD_SUCCESSFUL);
+            finish();
         }
     }
 }

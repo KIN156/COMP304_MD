@@ -1,5 +1,9 @@
 package com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +24,7 @@ import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.d
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.Test;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.interfaces.OnItemClickListener;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.PatientViewModel;
+import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.TestViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -35,20 +40,13 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
     TextInputEditText editTextRoom;
     TextInputEditText editTextNurseId;
 
-    //Changed values boolean
-    Boolean firstNameChanged = false;
-    Boolean lastNameChanged = false;
-    Boolean departmentChanged = false;
-    Boolean roomChanged = false;
-    Boolean nurseIdChanged = false;
-
     //Patient Attributes
-    int patientId = 0;
+    int patientId = -1;
     String patientFirstName = "";
     String patientLastName = "";
     String patientDepartment = "";
     String patientRoom = "";
-    int patientNurseId = 0;
+    int patientNurseId = -1;
 
     //Changed Patient Attributes
     String changedPatientFirstName = "";
@@ -57,15 +55,21 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
     String changedPatientRoom = "";
     int changedPatientNurseId = 0;
 
+    //Activity Result Launchers
+    ActivityResultLauncher<Intent> mStartAddTestForResult;
+
     //Database related
     PatientViewModel patientViewModel;
+    TestViewModel testViewModel;
 
     //Recycler View related
     TestRecyclerViewAdapter testRecyclerViewAdapter;
     RecyclerView testRecyclerView;
 
     //Data
-    List<Test> allTests;
+    List<Test> allTests = new ArrayList<>();
+
+    int currentResultCode = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,24 +98,34 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
         //Initially users wont be able to edit text field
         toggleEditTextFields(false);
 
+        //Register Activity results
+        mStartAddTestForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode() == Constants.ADD_SUCCESSFUL) {
+                            currentResultCode = Constants.ADD_SUCCESSFUL;
+                            new GetTestsForPatientAsyncTask().execute();
+                        }
+                    }
+                });
+
         //Initialize Patient View Model
         patientViewModel = new ViewModelProvider(this).get(PatientViewModel.class);
+        testViewModel = new ViewModelProvider(this).get(TestViewModel.class);
 
-        //Initialize test recycler view
-        allTests = getAllTests();
-        testRecyclerViewAdapter =
-                new TestRecyclerViewAdapter(UpdateInfoActivity.this, allTests,
-                        UpdateInfoActivity.this);
-        testRecyclerView
-                .setLayoutManager(new LinearLayoutManager(UpdateInfoActivity.this));
+        //Initialize test recycler view and adapter
+        testRecyclerView.setLayoutManager(new LinearLayoutManager(UpdateInfoActivity.this));
         testRecyclerView.setAdapter(testRecyclerViewAdapter);
-
 
         addTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(UpdateInfoActivity.this, TestActivity.class);
-                startActivity(intent);
+                intent.putExtra("patient_id", patientId);
+                intent.putExtra("nurse_id", patientNurseId);
+                //Register Activity result launcher
+                mStartAddTestForResult.launch(intent);
             }
         });
 
@@ -187,28 +201,8 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
             }
         });
 
-        final String currentFirstName = editTextFirstName.getText().toString();
-        final String[] changedFirstName = {""};
-        editTextFirstName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                changedFirstName[0] = editable.toString();
-                if(!currentFirstName.equals(changedFirstName[0])) {
-                    firstNameChanged = true;
-                }else{
-                    firstNameChanged = false;
-                }
-            }
-        });
+        //Get All Tests
+        new GetTestsForPatientAsyncTask().execute();
     }
 
     @Override
@@ -245,21 +239,67 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
             if(result) {
                 setResult(Constants.EDIT_SUCCESSFUL);
             }
+
+            //Update the patient attributes to the changed ones
+            patientFirstName = changedPatientFirstName;
+            patientLastName = changedPatientLastName;
+            patientDepartment = changedPatientDepartment;
+            patientRoom = changedPatientRoom;
+            patientNurseId = changedPatientNurseId;
+
             editButton.setText(getString(R.string.btn_edit_patient));
             toggleEditTextFields(false);
 //            finish();
         }
     }
 
-    private List<Test> getAllTests() {
+    private class GetTestsForPatientAsyncTask extends AsyncTask<Void, Void, List<Test>> {
+
+        @Override
+        protected List<Test> doInBackground(Void... voids) {
+            List<Test> tests = getAllTestsForPatient();
+            if(tests != null) {
+                return tests;
+            }else{
+                return new ArrayList<>();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Test> tests) {
+            super.onPostExecute(tests);
+
+            if(allTests.isEmpty()) {
+                allTests = tests;
+                //Tests are empty so we would need to create adapter here
+                testRecyclerViewAdapter =
+                        new TestRecyclerViewAdapter(UpdateInfoActivity.this, allTests,
+                                UpdateInfoActivity.this);
+                testRecyclerView.setAdapter(testRecyclerViewAdapter);
+                testRecyclerViewAdapter.notifyItemRangeChanged(0, allTests.size());
+
+            }else if(UpdateInfoActivity.this.currentResultCode == Constants.ADD_SUCCESSFUL){
+                //Get recently added test and add it to list
+                allTests.add(tests.get(tests.size()-1));
+            }
+
+            if(UpdateInfoActivity.this.currentResultCode == Constants.ADD_SUCCESSFUL) {
+                //Notify adapter about change
+                //New test was inserted at the last position
+                UpdateInfoActivity.this.testRecyclerViewAdapter
+                        .notifyItemInserted(allTests.size()-1);
+                Toast.makeText(UpdateInfoActivity.this,
+                        "New test added for patient", Toast.LENGTH_SHORT).show();
+            }
+
+            UpdateInfoActivity.this.currentResultCode = -1;
+        }
+    }
+    private List<Test> getAllTestsForPatient() {
         List<Test> tests = new ArrayList<>();
-        //Sample Data
-//        tests.add(new Test(123, 456, 90, 126, 65.5f));
-//        tests.add(new Test(124, 457, 91, 123, 62.5f));
-//        tests.add(new Test(133, 458, 92, 125, 61.5f));
-//        tests.add(new Test(153, 459, 94, 128, 67.4f));
-//        tests.add(new Test(113, 460, 95, 129, 63.5f));
-//        tests.add(new Test(193, 461, 97, 123, 62.5f));
+        if(patientId != -1) {
+            tests = testViewModel.getAllTestsForPatient(patientId);
+        }
         return tests;
     }
 

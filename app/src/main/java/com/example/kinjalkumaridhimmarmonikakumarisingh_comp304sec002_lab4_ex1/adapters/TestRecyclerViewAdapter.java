@@ -38,9 +38,11 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<TestRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull TestRecyclerViewAdapter.ViewHolder holder, int position) {
         Test test = testList.get(position);
-        holder.bplText.setText(String.valueOf(test.getBpl()));
-        holder.bphText.setText(String.valueOf(test.getBph()));
-        holder.temperatureText.setText(String.valueOf(test.getTemperature()));
+        holder.bplText.setText(test.getBpl());
+        holder.bphText.setText(test.getBph());
+        holder.temperatureText.setText(test.getTemperature());
+        holder.covidText.setText(test.getCovidTest());
+        holder.hivText.setText(test.getHivTest());
     }
 
     @Override
@@ -53,14 +55,19 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<TestRecyclerVi
         TextView bplText;
         TextView bphText;
         TextView temperatureText;
+        TextView covidText;
+        TextView hivText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             bplText = itemView.findViewById(R.id.card_test_bpl);
             bphText = itemView.findViewById(R.id.card_test_bph);
             temperatureText = itemView.findViewById(R.id.card_test_temp);
+            covidText = itemView.findViewById(R.id.card_test_covid);
+            hivText = itemView.findViewById(R.id.card_test_hiv);
             itemView.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View view) {
             if(itemClickListener != null)

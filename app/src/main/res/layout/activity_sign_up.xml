@@ -4,21 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UpdateInfoActivity"
-    android:orientation="vertical">
-
+    tools:context=".SignUpActivity">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:id="@+id/sign_relative_layout"
+        >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:id="@+id/test_info_linear_layout"
+            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:id="@+id/edit_text_layout">
-
+            >
             <TextView
                 android:id="@+id/info_textView"
                 android:layout_width="wrap_content"
@@ -27,29 +28,30 @@
                 android:textColor="@color/black"
                 android:textSize="40sp"
                 android:layout_margin="10dp"
-                android:text="@string/view_patient_information"
-                android:textStyle="bold" />
+                android:text="@string/sign_up"
+                android:textStyle="bold"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="15dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/first_name"
-                    android:textSize="18sp"></TextView>
+                    android:text="@string/user_id"
+                    android:textSize="18sp">
+                </TextView>
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_firstName"
+                    android:id="@+id/signup_user_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/enter_first_name"
                     android:inputType="textPersonName"
                     android:textColor="@drawable/edit_text_selector"
                     android:textSize="18sp" />
@@ -58,158 +60,141 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="15dp"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="@string/last_name">
-                </TextView>
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_lastName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:textSize="18sp"
-                    android:inputType="textPersonName"
-                    android:textColor="@drawable/edit_text_selector"
-                    android:hint="@string/enter_last_name" />
-            </LinearLayout>
+                android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="@string/department">
-                </TextView>
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_department"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:textSize="18sp"
-                    android:inputType="textPersonName"
-                    android:textColor="@drawable/edit_text_selector"
-                    android:hint="@string/enter_dept_name" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="@string/nurse_id">
-                </TextView>
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_nurseID"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:textSize="18sp"
-                    android:inputType="textPersonName"
-                    android:textColor="@drawable/edit_text_selector"
-                    android:hint="@string/enter_nurse_id" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/room"
+                    android:text="@string/first_name"
                     android:textSize="18sp">
                 </TextView>
+
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_room"
+                    android:id="@+id/signup_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:textSize="18sp"
                     android:textColor="@drawable/edit_text_selector"
-                    android:hint="@string/enter_room" />
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_name"
+                    android:textSize="18sp">
+                </TextView>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:textColor="@drawable/edit_text_selector"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/department"
+                    android:textSize="18sp">
+                </TextView>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_dept_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:textColor="@drawable/edit_text_selector"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password"
+                    android:textSize="18sp">
+                </TextView>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:textColor="@drawable/edit_text_selector"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/confirm_password"
+                    android:textSize="18sp">
+                </TextView>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_conf_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:textColor="@drawable/edit_text_selector"
+                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
 
         <Button
-            android:id="@+id/edit_patient_btn"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/edit_text_layout"
-            android:onClick="createPatientButton"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:text="@string/btn_edit_patient" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@+id/edit_patient_btn"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp">
+            android:id="@+id/sign_button"
+            android:text="@string/sign_up"
+            android:layout_centerHorizontal="true"
+           android:layout_below="@+id/test_info_linear_layout"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            >
+        </Button>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto"
-                    android:textColor="@color/black"
-                    android:textSize="40sp"
-                    android:text="@string/view_patient_test"
-                    android:textStyle="bold"
-
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_test"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:drawableLeft="@drawable/ic_action_add"
-                    android:drawablePadding="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:id="@+id/add_test_btn">
-                </Button>
-            </RelativeLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/test_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="500dp">
-            </androidx.recyclerview.widget.RecyclerView>
-
-
-        </LinearLayout>
     </RelativeLayout>
+
 </ScrollView>

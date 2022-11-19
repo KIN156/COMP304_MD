@@ -4,13 +4,17 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -136,50 +140,47 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
                 Toast.makeText(HomeActivity.this,
                         "Patient database is empty", Toast.LENGTH_SHORT).show();
             }else{
-                //We only proceed to create recycler adapter if patients data is not empty
 
                 //Source data for recycler view is empty we copy all data from patients
                 // to source data aka allPatients
                 if(allPatients.isEmpty()){
                     allPatients = patients;
-                }else if(currentResultCode == Constants.ADD_SUCCESSFUL){
-                    //We only add the newly added patient who is at the end of the list
-                    allPatients.add(patients.get(patients.size()-1));
-                }else if(currentResultCode == Constants.EDIT_SUCCESSFUL) {
-                    //Update the changed patient
-                    allPatients.set(lastChosenPatientPosition,
-                            patients.get(lastChosenPatientPosition));
-                }
-
-                if(patientRecyclerViewAdapter == null){
                     patientRecyclerViewAdapter =
                             new PatientRecyclerViewAdapter(HomeActivity.this, allPatients,
                                     HomeActivity.this);
                     patientsRecyclerView
                             .setLayoutManager(new LinearLayoutManager(HomeActivity.this));
                     patientsRecyclerView.setAdapter(patientRecyclerViewAdapter);
-                }else{
-                    //Dont need to create adapter, we use the existing adapter and notify
-                    //changes in data
-                    if(currentResultCode == Constants.ADD_SUCCESSFUL) {
-                        patientRecyclerViewAdapter.notifyItemInserted(allPatients.size()-1);
-                        //reset code
-                        currentResultCode = -1;
-                        Toast.makeText(HomeActivity.this,
-                                        "Patient Added Successfully", Toast.LENGTH_SHORT)
-                                .show();
-                    }else if(currentResultCode == Constants.EDIT_SUCCESSFUL) {
-                        patientRecyclerViewAdapter.notifyItemChanged(lastChosenPatientPosition);
-                        //reset position
-                        lastChosenPatientPosition = -1;
-                        //reset code
-                        currentResultCode = -1;
-                        Toast.makeText(HomeActivity.this, "Patient Edited Successfully",
-                                Toast.LENGTH_SHORT).show();
-                    }
+                    patientRecyclerViewAdapter.notifyItemRangeChanged(0, allPatients.size());
+                }else if(currentResultCode == Constants.ADD_SUCCESSFUL){
+                    //We only add the newly added patient who is at the end of the list
+                    allPatients.add(patients.get(patients.size()-1));
+                    patientRecyclerViewAdapter.notifyItemInserted(allPatients.size()-1);
+                    //reset code
+                    currentResultCode = -1;
+                    Toast.makeText(HomeActivity.this,
+                                    "Patient Added Successfully", Toast.LENGTH_SHORT)
+                            .show();
+                }else if(currentResultCode == Constants.EDIT_SUCCESSFUL) {
+                    //Update the changed patient
+                    allPatients.set(lastChosenPatientPosition,
+                            patients.get(lastChosenPatientPosition));
+                    patientRecyclerViewAdapter.notifyItemChanged(lastChosenPatientPosition);
+                    //reset position
+                    lastChosenPatientPosition = -1;
+                    //reset code
+                    currentResultCode = -1;
+                    Toast.makeText(HomeActivity.this, "Patient Edited Successfully",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        signOutConfirmationDialog(getString(R.string.logout_confirmation),
+                getString(R.string.yes), getString(R.string.no)).show();
     }
 
     /**
@@ -199,6 +200,33 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
         intent.putExtra("patient_room", patient.getRoom());
         intent.putExtra("patient_nurse_id", patient.getNurseID());
         mStartEditPatientForResult.launch(intent);
+    }
+
+    //Create Dialog
+    AlertDialog signOutConfirmationDialog(String message, String positiveButtonText, String negativeButtonText) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message)
+                .setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        SharedPreferences loginSharedPreferences =
+                                HomeActivity.this.getSharedPreferences("logged_in_shared_pref",
+                                Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = loginSharedPreferences.edit();
+                        editor.putBoolean("is_user_logged_in", false);
+                        editor.apply();
+                        Intent intent = new Intent(HomeActivity.this,
+                                LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton(negativeButtonText, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+        // Create the AlertDialog object and return it
+        return builder.create();
     }
 
 }
