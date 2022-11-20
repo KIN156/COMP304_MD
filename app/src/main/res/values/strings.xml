@@ -1,3 +1,67 @@
 <resources>
     <string name="app_name">KinjalkumariDhimmarMonikakumariSingh_COMP304Sec002_Lab4_Ex1</string>
+    <string name="patient_information">Patient Information</string>
+    <string name="add_test_info">Add Test\nInformation</string>
+    <string name="view_patient_information">Patient\nInformation</string>
+    <string name="add_patient">Add Patient\nInformation</string>
+    <string name="view_patient_test">Patient\nTests</string>
+    <string name="enter_first_name">Enter First Name</string>
+    <string name="enter_last_name">Enter Last Name</string>
+    <string name="enter_dept_name">Enter Department Name</string>
+    <string name="enter_nurse_id">Enter Nurse ID</string>
+    <string name="enter_room">Enter Room</string>
+    <string name="btn_enter_patient">Enter Patient</string>
+    <string name="btn_edit_patient">Edit Patient</string>
+    <string name="btn_save_patient">Save Patient</string>
+    <string name="enter_password">Enter password</string>
+    <string name="login">Log in</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="save_test">Save Test</string>
+    <string name="add_test">Add Test</string>
+    <string name="patients_list">Patients</string>
+    <string name="password">Password:</string>
+    <string name="confirm_password">Confirm Password:</string>
+    <string name="user_id">User ID:</string>
+    <string name="tests_list">Tests</string>
+    <string name="patient_id">Patient ID:</string>
+    <string name="first_name">First Name:</string>
+    <string name="last_name">Last Name:</string>
+    <string name="department">Department:</string>
+    <string name="nurse_id">Nurse ID:</string>
+    <string name="room">Room:</string>
+    <string name="test_id">Test ID:</string>
+    <string name="bpl">BPL:</string>
+    <string name="bph">BPH:</string>
+    <string name="temperature">Temperature:</string>
+    <string name="covid_test">COVID-19 Test:</string>
+    <string name="hiv_test">HIV/AIDS Test:</string>
+    <string name="login_signup">Don\'t have an account? Sign up here</string>
+    <string name="logout_confirmation">Are you sure you want to log out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="logout">Logout</string>
+    <string name="profile">Profile</string>
+    <string-array name="dept_name_array">
+        <item>General</item>
+        <item>Cardiology</item>
+        <item>Neurology</item>
+        <item>Dermatology</item>
+        <item>ENT</item>
+    </string-array>
+    <string-array name="room_names_array">
+        <item>Room 1</item>
+        <item>Room 2</item>
+        <item>Room 3</item>
+        <item>Room 4</item>
+        <item>Room 5</item>
+        <item>Room 6</item>
+        <item>Room 7</item>
+        <item>Room 8</item>
+        <item>Room 9</item>
+        <item>Room 10</item>
+    </string-array>
+    <string-array name="positive_negative_array">
+        <item>Positive</item>
+        <item>Negative</item>
+    </string-array>
 </resources>
