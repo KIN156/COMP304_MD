@@ -112,7 +112,7 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
 
         //Set Spinners
         ArrayAdapter<CharSequence> patientDeptArray = ArrayAdapter.createFromResource(this,
-                R.array.dept_name_array, android.R.layout.simple_spinner_item);
+                R.array.dept_name_array, R.layout.spinner_list_white);
         patientDeptArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         String[] deptNames = getResources().getStringArray(R.array.dept_name_array);
         patientDepartmentSpinner.setAdapter(patientDeptArray);
@@ -131,7 +131,7 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
         patientDepartmentSpinner.setSelection(Arrays.asList(deptNames).indexOf(patientDepartment));
 
         ArrayAdapter<CharSequence> patientRoomArray = ArrayAdapter.createFromResource(this,
-                R.array.room_names_array, android.R.layout.simple_spinner_item);
+                R.array.room_names_array, R.layout.spinner_list_white);
         patientRoomArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         patientRoomSpinner.setAdapter(patientRoomArray);
         String[] roomNames = getResources().getStringArray(R.array.room_names_array);
@@ -288,7 +288,7 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
             super.onPostExecute(unused);
             availableNurseIDs = new ArrayList<>(nurseIDs);
             nurseIDsSpinnerAdapter = new ArrayAdapter(UpdateInfoActivity.this,
-                    android.R.layout.simple_spinner_item,
+                    R.layout.spinner_list_white,
                     availableNurseIDs);
             nurseIDsSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             nurseIDsSpinner.setAdapter(nurseIDsSpinnerAdapter);

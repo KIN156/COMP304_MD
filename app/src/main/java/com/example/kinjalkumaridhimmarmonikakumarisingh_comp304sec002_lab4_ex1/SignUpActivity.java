@@ -73,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         //Spinner
         ArrayAdapter<CharSequence> nurseDeptArray = ArrayAdapter.createFromResource(this,
-                R.array.dept_name_array, android.R.layout.simple_spinner_item);
+                R.array.dept_name_array, R.layout.spinner_list_white);
         nurseDeptArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         nurseDeptNamesSpinner.setAdapter(nurseDeptArray);
         String[] deptNames = getResources().getStringArray(R.array.dept_name_array);

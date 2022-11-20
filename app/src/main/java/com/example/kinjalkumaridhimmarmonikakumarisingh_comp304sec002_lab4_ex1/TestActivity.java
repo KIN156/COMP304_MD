@@ -63,7 +63,7 @@ public class TestActivity extends AppCompatActivity {
         String[] pos_neg_value = getResources().getStringArray(R.array.positive_negative_array);
         //Spinner
         ArrayAdapter<CharSequence> covidArrayAdapter =  ArrayAdapter.createFromResource(this,
-                R.array.positive_negative_array, android.R.layout.simple_spinner_item);
+                R.array.positive_negative_array, R.layout.spinner_list_white);
         covidArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         covidSpinner.setAdapter(covidArrayAdapter);
         covidSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -81,7 +81,7 @@ public class TestActivity extends AppCompatActivity {
         covidSpinner.setSelection(0);
 
         ArrayAdapter<CharSequence> hivArrayAdapter = ArrayAdapter.createFromResource(this,
-                R.array.positive_negative_array, android.R.layout.simple_spinner_item);
+                R.array.positive_negative_array, R.layout.spinner_list_white);
         hivArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         hivSpinner.setAdapter(hivArrayAdapter);
         hivSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
