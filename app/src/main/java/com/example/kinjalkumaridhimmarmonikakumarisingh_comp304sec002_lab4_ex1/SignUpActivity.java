@@ -9,11 +9,13 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.Nurse;
-import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.NurseRepository;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.NurseViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -25,9 +27,9 @@ public class SignUpActivity extends AppCompatActivity {
     TextInputEditText userNameEditText;
     TextInputEditText firstNameEditText;
     TextInputEditText lastNameEditText;
-    TextInputEditText departmentEditText;
     TextInputEditText passwordEditText;
     TextInputEditText confirmPasswordEditText;
+    Spinner nurseDeptNamesSpinner;
     Button signUpButton;
 
     //Nurse Attributes
@@ -55,7 +57,7 @@ public class SignUpActivity extends AppCompatActivity {
         userNameEditText = findViewById(R.id.signup_user_id);
         firstNameEditText = findViewById(R.id.signup_first_name);
         lastNameEditText = findViewById(R.id.signup_last_name);
-        departmentEditText = findViewById(R.id.signup_dept_name);
+        nurseDeptNamesSpinner = findViewById(R.id.signup_dept_name_spinner);
         passwordEditText = findViewById(R.id.signup_password);
         confirmPasswordEditText = findViewById(R.id.signup_conf_password);
         signUpButton = findViewById(R.id.sign_button);
@@ -69,6 +71,25 @@ public class SignUpActivity extends AppCompatActivity {
         loginSharedPreferences = this.getSharedPreferences("logged_in_shared_pref",
                 Context.MODE_PRIVATE);
 
+        //Spinner
+        ArrayAdapter<CharSequence> nurseDeptArray = ArrayAdapter.createFromResource(this,
+                R.array.dept_name_array, android.R.layout.simple_spinner_item);
+        nurseDeptArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nurseDeptNamesSpinner.setAdapter(nurseDeptArray);
+        String[] deptNames = getResources().getStringArray(R.array.dept_name_array);
+        nurseDeptNamesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                department = deptNames[i];
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        department = deptNames[0];
+        nurseDeptNamesSpinner.setSelection(0);
+
         //Click Listeners
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,22 +98,25 @@ public class SignUpActivity extends AppCompatActivity {
                 if(userNameEditText.getText().toString().length() != 0 &&
                         firstNameEditText.getText().toString().length() != 0 &&
                         lastNameEditText.getText().toString().length() != 0 &&
-                        departmentEditText.getText().toString().length() != 0 &&
                         passwordEditText.getText().toString().length() != 0 &&
                         confirmPasswordEditText.getText().toString().length() != 0
                 ) {
                     if(passwordEditText.getText().toString()
                             .equals(confirmPasswordEditText.getText().toString())) {
-                        nurseID = Integer.parseInt(userNameEditText.getText().toString());
-                        firstName = firstNameEditText.getText().toString();
-                        lastName = lastNameEditText.getText().toString();
-                        department = departmentEditText.getText().toString();
-                        password = passwordEditText.getText().toString();
-                        confirmPassword = confirmPasswordEditText.getText().toString();
+                        try {
+                            nurseID = Integer.parseInt(userNameEditText.getText().toString());
+                            firstName = firstNameEditText.getText().toString();
+                            lastName = lastNameEditText.getText().toString();
+                            password = passwordEditText.getText().toString();
+                            confirmPassword = confirmPasswordEditText.getText().toString();
 
-                        //Begin Async Task to look if nurseID already exists
-                        new GetNurseIDsAsyncTask().execute();
-
+                            //Begin Async Task to look if nurseID already exists
+                            new GetNurseIDsAsyncTask().execute();
+                        }catch (NumberFormatException nfe) {
+                            Toast.makeText(SignUpActivity.this,
+                                    "Nurse user id cannot be a number",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }else{
                         Toast.makeText(SignUpActivity.this, "Passwords don't match",
                                 Toast.LENGTH_SHORT).show();

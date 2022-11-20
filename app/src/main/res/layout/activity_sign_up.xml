@@ -119,17 +119,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/department"
-                    android:textSize="18sp">
+                    android:textSize="18sp"
+                    android:layout_marginBottom="10dp">
                 </TextView>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signup_dept_name"
+                <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:textColor="@drawable/edit_text_selector"
-                    android:textSize="18sp" />
+                    android:id="@+id/signup_dept_name_spinner">
+                </Spinner>
             </LinearLayout>
 
             <LinearLayout

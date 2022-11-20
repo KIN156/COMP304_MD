@@ -3,6 +3,7 @@
     <string name="patient_information">Patient Information</string>
     <string name="add_test_info">Add Test\nInformation</string>
     <string name="view_patient_information">Patient\nInformation</string>
+    <string name="add_patient">Add Patient\nInformation</string>
     <string name="view_patient_test">Patient\nTests</string>
     <string name="enter_first_name">Enter First Name</string>
     <string name="enter_last_name">Enter Last Name</string>
@@ -40,4 +41,27 @@
     <string name="no">No</string>
     <string name="logout">Logout</string>
     <string name="profile">Profile</string>
+    <string-array name="dept_name_array">
+        <item>General</item>
+        <item>Cardiology</item>
+        <item>Neurology</item>
+        <item>Dermatology</item>
+        <item>ENT</item>
+    </string-array>
+    <string-array name="room_names_array">
+        <item>Room 1</item>
+        <item>Room 2</item>
+        <item>Room 3</item>
+        <item>Room 4</item>
+        <item>Room 5</item>
+        <item>Room 6</item>
+        <item>Room 7</item>
+        <item>Room 8</item>
+        <item>Room 9</item>
+        <item>Room 10</item>
+    </string-array>
+    <string-array name="positive_negative_array">
+        <item>Positive</item>
+        <item>Negative</item>
+    </string-array>
 </resources>

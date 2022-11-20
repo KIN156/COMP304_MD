@@ -4,26 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".TestActivity">
+    tools:context=".NurseProfileActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:text="@string/profile"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="20dp"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/test_info_linear_layout"
+        android:layout_centerInParent="true"
         >
-        <TextView
-            android:id="@+id/info_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
-            android:text="@string/add_test_info"
-            android:textStyle="bold"
-            />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,12 +37,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bpl"
+                android:text="@string/user_id"
                 android:textSize="18sp">
             </TextView>
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/addTest_bpl"
+                android:id="@+id/profile_user_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -60,12 +62,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bph"
+                android:text="@string/first_name"
                 android:textSize="18sp">
             </TextView>
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/addTest_bph"
+                android:id="@+id/profile_first_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -85,12 +87,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/temperature"
+                android:text="@string/last_name"
                 android:textSize="18sp">
             </TextView>
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/addTest_temp"
+                android:id="@+id/profile_last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -110,53 +112,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/covid_test"
-                android:layout_marginBottom="10dp"
+                android:text="@string/department"
                 android:textSize="18sp">
             </TextView>
 
-            <Spinner
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/profile_dept_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/addTest_covid_spinner">
-            </Spinner>
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textColor="@drawable/edit_text_selector"
+                android:textSize="18sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="15dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/hiv_test"
-                android:layout_marginBottom="10dp"
-                android:textSize="18sp">
-            </TextView>
-
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/addTest_hiv_spinner">
-            </Spinner>
-        </LinearLayout>
     </LinearLayout>
-
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/test_info_linear_layout"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/save_test_btn"
-        android:text="@string/save_test">
-    </Button>
 </RelativeLayout>

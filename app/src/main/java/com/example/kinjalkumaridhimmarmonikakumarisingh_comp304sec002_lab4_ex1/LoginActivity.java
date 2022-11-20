@@ -67,10 +67,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(nurseIDEditTextField.getText().toString().length() != 0 &&
                         passwordEditTextField.getText().toString().length() != 0) {
-                    nurseID = Integer.parseInt(nurseIDEditTextField.getText().toString());
-                    password = passwordEditTextField.getText().toString();
-
-                    new AuthenticateNurseTask().execute();
+                    try {
+                        nurseID = Integer.parseInt(nurseIDEditTextField.getText().toString());
+                        password = passwordEditTextField.getText().toString();
+                        new AuthenticateNurseTask().execute();
+                    }catch (NumberFormatException nfe) {
+                        Toast.makeText(LoginActivity.this, "Nurse user ID must be number",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(LoginActivity.this,
                             "All fields must be filled", Toast.LENGTH_SHORT).show();

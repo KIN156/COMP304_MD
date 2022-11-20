@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.adapters.PatientRecyclerViewAdapter;
@@ -36,6 +37,8 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
     PatientRecyclerViewAdapter patientRecyclerViewAdapter;
     RecyclerView patientsRecyclerView;
     FloatingActionButton addPatientFab;
+    ImageButton profileButton;
+    ImageButton logoutButton;
     private PatientViewModel patientViewModel;
     List<Patient> allPatients = new ArrayList<>();
     //Activity Result Launchers
@@ -60,6 +63,8 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
         //Initialize UI elements
         addPatientFab = findViewById(R.id.fab_add_patient);
         patientsRecyclerView = findViewById(R.id.patient_recycler_view);
+        profileButton = findViewById(R.id.nurse_profile_btn);
+        logoutButton = findViewById(R.id.logout_btn);
 
         //Initialize Patient View Model
         patientViewModel = new ViewModelProvider(this).get(PatientViewModel.class);
@@ -95,6 +100,23 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, PatientActivity.class);
                 mStartAddPatientForResult.launch(intent);
+            }
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signOutConfirmationDialog(getString(R.string.logout_confirmation),
+                        getString(R.string.yes), getString(R.string.no)).show();
+            }
+        });
+
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this,
+                        NurseProfileActivity.class);
+                startActivity(intent);
             }
         });
 

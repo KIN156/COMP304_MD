@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.constants.Constants;
@@ -22,8 +25,8 @@ public class TestActivity extends AppCompatActivity {
     TextInputEditText editTextBpl;
     TextInputEditText editTextBph;
     TextInputEditText editTextTemp;
-    TextInputEditText editTextCovid;
-    TextInputEditText editTextHiv;
+    Spinner covidSpinner;
+    Spinner hivSpinner;
     Button saveTestButton;
 
     //Test Attributes
@@ -47,8 +50,8 @@ public class TestActivity extends AppCompatActivity {
         editTextBpl = findViewById(R.id.addTest_bpl);
         editTextBph = findViewById(R.id.addTest_bph);
         editTextTemp = findViewById(R.id.addTest_temp);
-        editTextCovid = findViewById(R.id.addTest_covid);
-        editTextHiv = findViewById(R.id.addTest_hiv);
+        covidSpinner = findViewById(R.id.addTest_covid_spinner);
+        hivSpinner = findViewById(R.id.addTest_hiv_spinner);
         saveTestButton = findViewById(R.id.save_test_btn);
 
         //Initialize view model for test
@@ -56,6 +59,44 @@ public class TestActivity extends AppCompatActivity {
 
         //Get values from intent
         getValuesFromIntent();
+
+        String[] pos_neg_value = getResources().getStringArray(R.array.positive_negative_array);
+        //Spinner
+        ArrayAdapter<CharSequence> covidArrayAdapter =  ArrayAdapter.createFromResource(this,
+                R.array.positive_negative_array, android.R.layout.simple_spinner_item);
+        covidArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        covidSpinner.setAdapter(covidArrayAdapter);
+        covidSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                covid = pos_neg_value[i];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        covid = pos_neg_value[0];
+        covidSpinner.setSelection(0);
+
+        ArrayAdapter<CharSequence> hivArrayAdapter = ArrayAdapter.createFromResource(this,
+                R.array.positive_negative_array, android.R.layout.simple_spinner_item);
+        hivArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        hivSpinner.setAdapter(hivArrayAdapter);
+        hivSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                hiv = pos_neg_value[i];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        hiv = pos_neg_value[0];
+        hivSpinner.setSelection(0);
 
         //Listeners
         saveTestButton.setOnClickListener(new View.OnClickListener() {
@@ -65,15 +106,11 @@ public class TestActivity extends AppCompatActivity {
                 //Get value from edit text
                 if (editTextBpl.getText().toString().length() != 0 &&
                         editTextBph.getText().toString().length() != 0 &&
-                        editTextTemp.getText().toString().length() != 0 &&
-                        editTextCovid.getText().toString().length() != 0 &&
-                        editTextHiv.getText().toString().length() != 0) {
+                        editTextTemp.getText().toString().length() != 0) {
 
                     bpl = editTextBpl.getText().toString();
                     bph = editTextBph.getText().toString();
                     temp = editTextTemp.getText().toString();
-                    hiv = editTextHiv.getText().toString();
-                    covid = editTextCovid.getText().toString();
 
                     if(patientID != -1 && nurseID != -1) {
                         Test test = new Test(patientID, nurseID, bpl, bph, temp, hiv, covid);

@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.adapters.TestRecyclerViewAdapter;
@@ -23,11 +24,13 @@ import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.c
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.Patient;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.data.Test;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.interfaces.OnItemClickListener;
+import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.NurseViewModel;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.PatientViewModel;
 import com.example.kinjalkumaridhimmarmonikakumarisingh_comp304sec002_lab4_ex1.viewmodels.TestViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UpdateInfoActivity extends AppCompatActivity implements OnItemClickListener {
@@ -36,9 +39,9 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
     Button addTestButton;
     TextInputEditText editTextFirstName;
     TextInputEditText editTextLastName;
-    TextInputEditText editTextDepartment;
-    TextInputEditText editTextRoom;
-    TextInputEditText editTextNurseId;
+    Spinner patientDepartmentSpinner;
+    Spinner patientRoomSpinner;
+    Spinner nurseIDsSpinner;
 
     //Patient Attributes
     int patientId = -1;
@@ -47,6 +50,11 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
     String patientDepartment = "";
     String patientRoom = "";
     int patientNurseId = -1;
+
+    //Spinner Datas
+    ArrayList<Integer> availableNurseIDs;
+    ArrayAdapter<Integer> nurseIDsSpinnerAdapter;
+
 
     //Changed Patient Attributes
     String changedPatientFirstName = "";
@@ -61,6 +69,7 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
     //Database related
     PatientViewModel patientViewModel;
     TestViewModel testViewModel;
+    NurseViewModel nurseViewModel;
 
     //Recycler View related
     TestRecyclerViewAdapter testRecyclerViewAdapter;
@@ -68,6 +77,7 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
 
     //Data
     List<Test> allTests = new ArrayList<>();
+    List<Integer> nurseIDs = new ArrayList<>();
 
     int currentResultCode = -1;
 
@@ -80,10 +90,18 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
         addTestButton = findViewById(R.id.add_test_btn);
         editTextFirstName = findViewById(R.id.edit_firstName);
         editTextLastName = findViewById(R.id.edit_lastName);
-        editTextDepartment = findViewById(R.id.edit_department);
-        editTextRoom = findViewById(R.id.edit_room);
-        editTextNurseId = findViewById(R.id.edit_nurseID);
+        patientDepartmentSpinner = findViewById(R.id.patient_department_spinner);
+        patientRoomSpinner = findViewById(R.id.patient_room_spinner);
+        nurseIDsSpinner = findViewById(R.id.nurse_id_spinner);
         testRecyclerView = findViewById(R.id.test_recycler_view);
+
+        //Initialize Patient View Model
+        patientViewModel = new ViewModelProvider(this).get(PatientViewModel.class);
+        testViewModel = new ViewModelProvider(this).get(TestViewModel.class);
+        nurseViewModel = new ViewModelProvider(this).get(NurseViewModel.class);
+
+        //Initialize nurseIDs
+        availableNurseIDs = new ArrayList<>();
 
         //Get Values for all the text fields
         getValuesForTextFields();
@@ -91,12 +109,51 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
         //Set values to edit text fields
         editTextFirstName.setText(patientFirstName);
         editTextLastName.setText(patientLastName);
-        editTextDepartment.setText(patientDepartment);
-        editTextRoom.setText(patientRoom);
-        editTextNurseId.setText(String.valueOf(patientNurseId));
+
+        //Set Spinners
+        ArrayAdapter<CharSequence> patientDeptArray = ArrayAdapter.createFromResource(this,
+                R.array.dept_name_array, android.R.layout.simple_spinner_item);
+        patientDeptArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] deptNames = getResources().getStringArray(R.array.dept_name_array);
+        patientDepartmentSpinner.setAdapter(patientDeptArray);
+        patientDepartmentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                changedPatientDepartment = deptNames[i];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        changedPatientDepartment = patientDepartment;
+        patientDepartmentSpinner.setSelection(Arrays.asList(deptNames).indexOf(patientDepartment));
+
+        ArrayAdapter<CharSequence> patientRoomArray = ArrayAdapter.createFromResource(this,
+                R.array.room_names_array, android.R.layout.simple_spinner_item);
+        patientRoomArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        patientRoomSpinner.setAdapter(patientRoomArray);
+        String[] roomNames = getResources().getStringArray(R.array.room_names_array);
+        patientRoomSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                changedPatientRoom = roomNames[i];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        changedPatientRoom = patientRoom;
+        patientRoomSpinner.setSelection(Arrays.asList(roomNames).indexOf(patientRoom));
+
+
+        new GetAvailableNurseIDs().execute();
 
         //Initially users wont be able to edit text field
-        toggleEditTextFields(false);
+        toggleFields(false);
 
         //Register Activity results
         mStartAddTestForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -109,10 +166,6 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
                         }
                     }
                 });
-
-        //Initialize Patient View Model
-        patientViewModel = new ViewModelProvider(this).get(PatientViewModel.class);
-        testViewModel = new ViewModelProvider(this).get(TestViewModel.class);
 
         //Initialize test recycler view and adapter
         testRecyclerView.setLayoutManager(new LinearLayoutManager(UpdateInfoActivity.this));
@@ -136,7 +189,7 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
                 //User wishes to edit..
                 //Enable all text fields
                 if(editButton.getText().toString().equals(getString(R.string.btn_edit_patient))) {
-                    toggleEditTextFields(true);
+                    toggleFields(true);
                     //Change button name to save
                     editButton.setText(getString(R.string.btn_save_patient));
                     return;
@@ -145,9 +198,6 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
                 //Update database record
                 String newFirstName = editTextFirstName.getText().toString();
                 String newLastName = editTextLastName.getText().toString();
-                String newDepartment = editTextDepartment.getText().toString();
-                String newRoom = editTextRoom.getText().toString();
-                String newNurseId = editTextNurseId.getText().toString();
 
                 //See if any value changed
                 if(newFirstName.length() != 0) {
@@ -169,34 +219,6 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
                     return;
                 }
 
-
-                if(newDepartment.length() != 0) {
-                    changedPatientDepartment = newDepartment;
-                }
-                else{
-                    Toast.makeText(UpdateInfoActivity.this,
-                            "Department name can't be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if(newRoom.length() != 0) {
-                    changedPatientRoom = newRoom;
-                }
-                else{
-                    Toast.makeText(UpdateInfoActivity.this,
-                            "Room can't be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-
-                if(newNurseId.length() != 0) {
-                    changedPatientNurseId = Integer.parseInt(newNurseId);
-                }
-                else{
-                    Toast.makeText(UpdateInfoActivity.this,
-                            "Nurse ID can't be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 new EditPatientOnDatabaseAsyncTask().execute();
             }
         });
@@ -248,11 +270,43 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
             patientNurseId = changedPatientNurseId;
 
             editButton.setText(getString(R.string.btn_edit_patient));
-            toggleEditTextFields(false);
+            toggleFields(false);
 //            finish();
         }
     }
 
+    private class GetAvailableNurseIDs extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            nurseIDs = nurseViewModel.getAllNurseIDs();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            availableNurseIDs = new ArrayList<>(nurseIDs);
+            nurseIDsSpinnerAdapter = new ArrayAdapter(UpdateInfoActivity.this,
+                    android.R.layout.simple_spinner_item,
+                    availableNurseIDs);
+            nurseIDsSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            nurseIDsSpinner.setAdapter(nurseIDsSpinnerAdapter);
+            changedPatientNurseId = availableNurseIDs.indexOf(patientNurseId);
+            nurseIDsSpinner.setSelection(availableNurseIDs.indexOf(patientNurseId));
+            nurseIDsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    changedPatientNurseId = availableNurseIDs.get(i);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        }
+    }
     private class GetTestsForPatientAsyncTask extends AsyncTask<Void, Void, List<Test>> {
 
         @Override
@@ -338,12 +392,12 @@ public class UpdateInfoActivity extends AppCompatActivity implements OnItemClick
         return null;
     }
 
-    private void toggleEditTextFields(Boolean enabled) {
+    private void toggleFields(Boolean enabled) {
         editTextFirstName.setEnabled(enabled);
         editTextLastName.setEnabled(enabled);
-        editTextDepartment.setEnabled(enabled);
-        editTextRoom.setEnabled(enabled);
-        editTextNurseId.setEnabled(enabled);
+        patientDepartmentSpinner.setEnabled(enabled);
+        patientRoomSpinner.setEnabled(enabled);
+        nurseIDsSpinner.setEnabled(enabled);
     }
 
     private void getValuesForTextFields() {

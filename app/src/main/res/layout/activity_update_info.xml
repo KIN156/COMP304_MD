@@ -91,17 +91,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/department">
                 </TextView>
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_department"
+                <Spinner
+                    android:id="@+id/patient_department_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:textSize="18sp"
-                    android:inputType="textPersonName"
-                    android:textColor="@drawable/edit_text_selector"
-                    android:hint="@string/enter_dept_name" />
+                    android:textAlignment="center">
+                </Spinner>
             </LinearLayout>
 
             <LinearLayout
@@ -115,17 +113,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="@string/nurse_id">
+                    android:text="@string/nurse_id"
+                    android:layout_marginBottom="10dp">
                 </TextView>
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_nurseID"
+
+                <Spinner
+                    android:id="@+id/nurse_id_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:textSize="18sp"
-                    android:inputType="textPersonName"
-                    android:textColor="@drawable/edit_text_selector"
-                    android:hint="@string/enter_nurse_id" />
+                    android:textAlignment="center">
+                </Spinner>
             </LinearLayout>
 
             <LinearLayout
@@ -139,17 +136,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/room"
+                    android:layout_marginBottom="10dp"
                     android:textSize="18sp">
                 </TextView>
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_room"
+                <Spinner
+                    android:id="@+id/patient_room_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:textSize="18sp"
-                    android:textColor="@drawable/edit_text_selector"
-                    android:hint="@string/enter_room" />
+                    android:textAlignment="center">
+                </Spinner>
             </LinearLayout>
         </LinearLayout>
 
