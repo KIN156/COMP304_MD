@@ -19,15 +19,24 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         />
+
     <LinearLayout
         android:id="@+id/login_linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_centerInParent="true">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp"
+            android:src="@mipmap/ic_sh_health_round">
+        </ImageView>
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nurse_login_id_field"
