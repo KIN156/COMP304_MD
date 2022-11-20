@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
     tools:context=".SignUpActivity">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="40sp"
                 android:layout_margin="10dp"
                 android:text="@string/sign_up"
@@ -44,6 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/user_id"
+                    android:textColor="@color/white"
                     android:textSize="18sp">
                 </TextView>
 
@@ -53,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textPersonName"
+                    android:backgroundTint="#FFFFFF"
                     android:textColor="@drawable/edit_text_selector"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -69,6 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/first_name"
+                    android:textColor="@color/white"
                     android:textSize="18sp">
                 </TextView>
 
@@ -77,6 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:backgroundTint="#FFFFFF"
                     android:inputType="textPersonName"
                     android:textColor="@drawable/edit_text_selector"
                     android:textSize="18sp" />
@@ -93,6 +98,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:text="@string/last_name"
                     android:textSize="18sp">
                 </TextView>
@@ -102,6 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:backgroundTint="#FFFFFF"
                     android:inputType="textPersonName"
                     android:textColor="@drawable/edit_text_selector"
                     android:textSize="18sp" />
@@ -119,6 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/department"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
                     android:layout_marginBottom="10dp">
                 </TextView>
@@ -126,6 +134,8 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:popupBackground="@drawable/rounded_spinner"
                     android:id="@+id/signup_dept_name_spinner">
                 </Spinner>
             </LinearLayout>
@@ -142,6 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/password"
+                    android:textColor="@color/white"
                     android:textSize="18sp">
                 </TextView>
 
@@ -150,6 +161,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:backgroundTint="#FFFFFF"
                     android:inputType="textPassword"
                     android:textColor="@drawable/edit_text_selector"
                     android:textSize="18sp" />
@@ -167,6 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/confirm_password"
+                    android:textColor="@color/white"
                     android:textSize="18sp">
                 </TextView>
 
@@ -176,20 +189,27 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textPassword"
+                    android:backgroundTint="#FFFFFF"
                     android:textColor="@drawable/edit_text_selector"
                     android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/sign_button"
             android:text="@string/sign_up"
+            android:textColor="@color/purple_700"
             android:layout_centerHorizontal="true"
            android:layout_below="@+id/test_info_linear_layout"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:textAllCaps="false"
+            android:elevation="20dp"
+            android:background="@drawable/button_round_corner_shape"
             >
         </Button>
 

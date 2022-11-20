@@ -5,41 +5,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background_gradient"
+
     tools:context=".LoginActivity">
+
     <TextView
         android:id="@+id/info_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto"
-        android:textColor="@color/black"
-        android:textSize="40sp"
-        android:layout_margin="20dp"
-        android:text="@string/login"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        />
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:id="@+id/login_linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_centerInParent="true">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp"
+            android:src="@mipmap/ic_sh_health_new_round">
+        </ImageView>
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nurse_login_id_field"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_nurse_id" />
+            android:backgroundTint="#FFFFFF"
+            android:hint="@string/enter_nurse_id"
+            android:shadowColor="#FFFFFF"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nurse_password_field_id"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColorHint="@color/white"
+            android:textColor="@color/white"
             android:hint="@string/enter_password"
             android:inputType="textPassword" />
     </LinearLayout>
@@ -62,6 +83,8 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/button_round_corner_shape"
             android:textAllCaps="false"
+            android:textColor= "@color/purple_700"
+            android:elevation="20dp"
             android:text="@string/login" />
 
         <Button
@@ -70,6 +93,7 @@
             android:id="@+id/login_signup_btn"
             android:text="@string/login_signup"
             android:textAllCaps="false"
+            android:textColor="@color/white"
             android:background="@color/transparent">
         </Button>
     </LinearLayout>

@@ -79,7 +79,7 @@ public class PatientActivity extends AppCompatActivity {
         departmentSpinner.setSelection(0);
 
         ArrayAdapter<CharSequence> roomNameSpinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.room_names_array, android.R.layout.simple_spinner_item);
+                R.array.room_names_array, R.layout.spinner_list_white);
         roomNameSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         roomSpinner.setAdapter(roomNameSpinnerAdapter);
         String[] roomNamesArray = getResources().getStringArray(R.array.room_names_array);
@@ -135,7 +135,7 @@ public class PatientActivity extends AppCompatActivity {
             nurseIDsSpinnerAdapter = new ArrayAdapter(PatientActivity.this,
                     android.R.layout.simple_spinner_item,
                     availableNurseIDs);
-            nurseIDsSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            nurseIDsSpinnerAdapter.setDropDownViewResource(R.layout.spinner_list_white);
             nurseIDSpinner.setAdapter(nurseIDsSpinnerAdapter);
             nurseIDValue = availableNurseIDs.get(0);
             nurseIDSpinner.setSelection(0);

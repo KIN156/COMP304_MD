@@ -31,8 +31,7 @@ public class Test {
     @NonNull
     String hivTest;
 
-    //TODO: Add More Tests
-
+    //Add More Tests
     public Test(@NonNull int patientID,
                 @NonNull int nurseID,
                 @NonNull String bpl,@NonNull String bph,
