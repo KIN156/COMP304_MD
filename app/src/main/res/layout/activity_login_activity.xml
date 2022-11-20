@@ -65,18 +65,21 @@
 
         <Button
             android:id="@+id/login_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
-            android:text="@string/login"
-            />
+            android:background="@drawable/button_round_corner_shape"
+            android:textAllCaps="false"
+            android:text="@string/login" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/login_signup_btn"
-            android:text="@string/login_signup">
+            android:text="@string/login_signup"
+            android:textAllCaps="false"
+            android:background="@color/transparent">
         </Button>
     </LinearLayout>
 
